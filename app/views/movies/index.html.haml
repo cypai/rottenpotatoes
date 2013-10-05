@@ -5,17 +5,10 @@
   %thead
     %tr
       %th 
-<<<<<<< HEAD
-        %a{:id => "title_header", :href => "/movies/sort_by_title"} Movie Title
-      %th Rating
-      %th
-        %a{:id => "release_date_header", :href => "/movies/sort_by_release_date"} Release Date
-=======
         %a{:id => "title_header", :href => "/movies?sort_by=title"} Movie Title
       %th Rating
       %th
         %a{:id => "release_date_header", :href => "/movies?sort_by=release_date"} Release Date
->>>>>>> 7ab7dc29ac04554048763688875498bf083103b2
       %th More Info
   %tbody
     - @movies.each do |movie|
