@@ -10,11 +10,11 @@ class MoviesController < ApplicationController
     @title_class = ""
     @release_class = ""
     @all_ratings = Movie.get_ratings
-    checked_ratings = params[:ratings]
-    if checked_ratings != nil
-      query = Movie.where(:rating => checked_ratings.keys)
+    @checked_ratings = params[:ratings]
+    if @checked_ratings != nil
+      query = Movie.where(:rating => @checked_ratings.keys)
     else
-      query = Movie
+      redirect_to movies_path(:ratings => Movie.get_ratings)
     end
     if params.has_key?(:sort_by)
       if params[:sort_by] == "title"
