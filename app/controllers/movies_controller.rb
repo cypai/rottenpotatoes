@@ -26,7 +26,8 @@ class MoviesController < ApplicationController
         session[:sort_by] = nil
       end
       @movies = query.find(:all)
-      session[:ratings] = params[:ratings]
+      session[:ratings] = params[:ratings].keys
+      @debug = session[:ratings]
     else
       if session.has_key?(:ratings)
         ratings_list = session[:ratings]
