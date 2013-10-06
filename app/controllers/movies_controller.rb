@@ -21,14 +21,31 @@ class MoviesController < ApplicationController
           query = query.order("release_date")
           @release_class = "hilite"
         end
+        session[:sort_by] = params[:sort_by]
+      else
+        session[:sort_by] = nil
       end
       @movies = query.find(:all)
+      session[:ratings] = params[:ratings]
     else
-#      args = {}
-      args = {:sort_by => params[:sort_by]}
-      @all_ratings.each do |rating|
+      if session.has_key?(:ratings)
+        ratings_list = session[:ratings]
+      else
+        ratings_list = @all_ratings
+      end
+      if params.has_key?(:sort_by)
+        args = {:sort_by => params[:sort_by]}
+      else
+        if session.has_key?(:sort_by)
+          args = {:sort_by => session[:sort_by]}
+        else
+          args = {}
+        end
+      end
+      ratings_list.each do |rating|
         args["ratings[#{rating}]"] = 1
       end
+      flash.keep
       redirect_to movies_path(args)
     end
   end
