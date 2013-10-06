@@ -11,18 +11,21 @@ class MoviesController < ApplicationController
     @release_class = ""
     @all_ratings = Movie.get_ratings
     checked_ratings = params[:ratings]
+    if checked_ratings != nil
+      query = Movie.where(:rating => checked_ratings.keys)
+    else
+      query = Movie
+    end
     if params.has_key?(:sort_by)
       if params[:sort_by] == "title"
-        @movies = Movie.find(:all, :order => "title")
+        query = query.order("title")
         @title_class = "hilite"
       elsif params[:sort_by] == "release_date"
-        @movies = Movie.find(:all, :order => "release_date")
+        query = query.order("release_date")
         @release_class = "hilite"
       end
-    else
-      @movies = Movie.all
     end
-    @movies = @movies.where(rating: checked_ratings.keys)
+    @movies = query.find(:all)
   end
 
   def new
