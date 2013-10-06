@@ -14,7 +14,11 @@ class MoviesController < ApplicationController
     if @checked_ratings != nil
       query = Movie.where(:rating => @checked_ratings.keys)
     else
-      redirect_to movies_path(:ratings => Movie.get_ratings)
+      args = {}
+      @all_ratings.each do |rating|
+        args[rating] = true
+      end
+      redirect_to movies_path(args)
     end
     if params.has_key?(:sort_by)
       if params[:sort_by] == "title"
