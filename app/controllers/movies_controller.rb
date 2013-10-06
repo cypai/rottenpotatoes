@@ -10,6 +10,7 @@ class MoviesController < ApplicationController
     @title_class = ""
     @release_class = ""
     @all_ratings = Movie.get_ratings
+    checked_ratings = params[:ratings]
     if params.has_key?(:sort_by)
       if params[:sort_by] == "title"
         @movies = Movie.find(:all, :order => "title")
@@ -21,6 +22,7 @@ class MoviesController < ApplicationController
     else
       @movies = Movie.all
     end
+    @movies = @movies.where(rating: checked_ratings.keys)
   end
 
   def new
