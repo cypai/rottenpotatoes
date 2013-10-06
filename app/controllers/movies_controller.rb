@@ -13,23 +13,24 @@ class MoviesController < ApplicationController
     @checked_ratings = params[:ratings]
     if @checked_ratings != nil
       query = Movie.where(:rating => @checked_ratings.keys)
+      if params.has_key?(:sort_by)
+        if params[:sort_by] == "title"
+          query = query.order("title")
+          @title_class = "hilite"
+        elsif params[:sort_by] == "release_date"
+          query = query.order("release_date")
+          @release_class = "hilite"
+        end
+      end
+      @movies = query.find(:all)
     else
-      args = {}
+#      args = {}
+      args = {:sort_by => params[:sort_by]}
       @all_ratings.each do |rating|
-        args[rating] = true
+        args["ratings[#{rating}]"] = 1
       end
       redirect_to movies_path(args)
     end
-    if params.has_key?(:sort_by)
-      if params[:sort_by] == "title"
-        query = query.order("title")
-        @title_class = "hilite"
-      elsif params[:sort_by] == "release_date"
-        query = query.order("release_date")
-        @release_class = "hilite"
-      end
-    end
-    @movies = query.find(:all)
   end
 
   def new
