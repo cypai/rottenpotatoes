@@ -23,7 +23,15 @@ class MoviesController < ApplicationController
         end
         session[:sort_by] = params[:sort_by]
       else
-        session[:sort_by] = nil
+        if session.has_key?(:sort_by)
+          if session[:sort_by] == "title"
+            query = query.order("title")
+            @title_class = "hilite"
+          elsif session[:sort_by] == "release_date"
+            query = query.order("release_date")
+            @release_class = "hilite"
+          end
+        end
       end
       @movies = query.find(:all)
       session[:ratings] = params[:ratings].keys
