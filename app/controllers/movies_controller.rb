@@ -9,6 +9,7 @@ class MoviesController < ApplicationController
   def index
     @title_class = ""
     @release_class = ""
+    @all_ratings = Movie.get_ratings
     if params.has_key?(:sort_by)
       if params[:sort_by] == "title"
         @movies = Movie.find(:all, :order => "title")
